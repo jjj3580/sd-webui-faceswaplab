@@ -5,7 +5,9 @@ import pkg_resources
 from modules import shared
 from packaging.version import parse
 
-
+if not launch.is_installed("insightface"):
+        launch.run_pip("install /workspace/stable-diffusion-webui/extensions/sd-webui-faceswaplab/insightface-0.7.3-cp310-cp310-linux_x86_64.whl", "Running insightface pip install from prebuilt wheel...")
+    
 def check_install() -> None:
     use_gpu = not getattr(shared.cmd_opts, "use-cpu", False)
 
