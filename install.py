@@ -2,14 +2,20 @@ import launch
 import os
 import sys
 import pkg_resources
-from modules import shared
 from packaging.version import parse
 
 if not launch.is_installed("insightface"):
         launch.run_pip("install /workspace/stable-diffusion-webui/extensions/sd-webui-faceswaplab/insightface-0.7.3-cp310-cp310-linux_x86_64.whl", "Running insightface pip install from prebuilt wheel...")
     
 def check_install() -> None:
-    use_gpu = not getattr(shared.cmd_opts, "use-cpu", False)
+    use_gpu = True
+    try:
+        from modules import shared
+
+        use_gpu = not getattr(shared.cmd_opts, "use-cpu", False)
+    except:
+        # On some platform previous lines may failed (modules.shared not initialized), just ignore and use GPU requirements
+        pass
 
     if use_gpu and sys.platform != "darwin":
         print("Faceswaplab : Use GPU requirements")
